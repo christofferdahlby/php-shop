@@ -2,7 +2,15 @@
 require_once("Models/Product.php");
 require_once("components/HeaderComponent.php");
 require_once("components/NavbarComponent.php");
+require_once("components/ProductComponent.php");
 
+$allProducts = getAllProducts();
+
+$searchWord = $_GET["q"] ?? "";
+
+$filteredProducts = array_filter($allProducts, function ($product) use ($searchWord) {
+    return stripos($product->title, $searchWord) !== false;
+});
 
 ?>
 
@@ -10,7 +18,7 @@ require_once("components/NavbarComponent.php");
 <html lang="en">
 
 <head>
-    <?php headerComponent("Admin"); ?>
+    <?php headerComponent("Search Results"); ?>
 </head>
 
 <body>
@@ -28,32 +36,15 @@ require_once("components/NavbarComponent.php");
     <!-- Section-->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
-            <table class="table">
-                <thead>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Stock level</th>
-                    <th>action</th>
-                </thead>
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                <?php
+                foreach ($filteredProducts as $product) {
 
-                <tbody>
-                    <tr>
-                        <td>Test</td>
-                        <td>Cars</td>
-                        <td>2</td>
-                        <td>1</td>
-                        <td><a class="btn btn-primary">Edit</a></td>
-                    </tr>
-                    <tr>
-                        <td>Test2</td>
-                        <td>Cars</td>
-                        <td>22</td>
-                        <td>12</td>
-                        <td><a class="btn btn-primary">Edit</a></td>
-                    </tr>
-                </tbody>
-            </table>
+                    productComponent($product);
+
+                }
+                ?>
+            </div>
         </div>
     </section>
     <!-- Footer-->
