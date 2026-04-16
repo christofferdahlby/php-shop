@@ -33,7 +33,7 @@ function navbarComponent()
                             type="button">Go!</button>
                     </div>
                 </form>
-                <form class="d-flex">
+                <form class="d-flex ms-3">
                     <button class="btn btn-outline-dark" type="submit">
                         <i class="bi-cart-fill me-1"></i>
                         Cart
