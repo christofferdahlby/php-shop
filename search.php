@@ -3,13 +3,18 @@ require_once("Models/Product.php");
 require_once("components/HeaderComponent.php");
 require_once("components/NavbarComponent.php");
 require_once("components/ProductComponent.php");
+require_once("Models/Database.php");
 
-$allProducts = getAllProducts();
+$database = new Database();
+
+
+$allProducts = $database->getAllProducts();
 
 $searchWord = $_GET["q"] ?? "";
 
+// SELECT * FROM product WHERE name LIKE :q OR description LIKE :q
 $filteredProducts = array_filter($allProducts, function ($product) use ($searchWord) {
-    return stripos($product->title, $searchWord) !== false;
+    return stripos($product->artist, $searchWord) !== false || stripos($product->record_title, $searchWord) !== false;
 });
 
 ?>
@@ -28,8 +33,8 @@ $filteredProducts = array_filter($allProducts, function ($product) use ($searchW
     <header class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Super shoppen</h1>
-                <p class="lead fw-normal text-white-50 mb-0">Handla massa onödigt hos oss!</p>
+                <h1 class="display-4 fw-bolder">Recordstore</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Your home for vinyl</p>
             </div>
         </div>
     </header>

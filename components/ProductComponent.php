@@ -11,8 +11,10 @@ function productComponent($product)
             <!-- Product details-->
             <div class="card-body p-4">
                 <div class="text-center">
-                    <!-- Product name-->
-                    <h5 class="fw-bolder"><?php echo $product->title; ?></h5>
+                    <!-- Record title-->
+                    <h5 class="fw-bolder"><?php echo $product->record_title; ?></h5>
+                    <!-- Artist name-->
+                    <p class="text-muted"><?php echo $product->artist; ?></p>
                     <!-- Product price-->
                     SEK <?php echo $product->price; ?>
                 </div>
