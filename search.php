@@ -13,9 +13,7 @@ $allProducts = $database->getAllProducts();
 $searchWord = $_GET["q"] ?? "";
 
 // SELECT * FROM product WHERE name LIKE :q OR description LIKE :q
-$filteredProducts = array_filter($allProducts, function ($product) use ($searchWord) {
-    return stripos($product->artist, $searchWord) !== false || stripos($product->record_title, $searchWord) !== false;
-});
+$filteredProducts = $database->searchProducts($searchWord);
 
 ?>
 

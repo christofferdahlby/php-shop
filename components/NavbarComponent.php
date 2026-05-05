@@ -1,8 +1,9 @@
 <?php
-
+require_once("Models/Database.php");
 function navbarComponent()
 {
-    ?>
+    $database = new Database();
+    $allCategories = $database->getAllCategories(); ?>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container px-4 px-lg-5">
@@ -16,11 +17,15 @@ function navbarComponent()
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">Genres</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#!">All Genres</a></li>
+                            <li><a class="dropdown-item" href="category.php">All Genres</a></li>
                             <li>
                                 <hr class="dropdown-divider" />
                             </li>
-                            <li><a class="dropdown-item" href="#!">En cat</a></li>
+                            <?php
+                            foreach ($allCategories as $category) {
+                                echo "<li><a class=\"dropdown-item\" href=\"category.php?genre=" . urlencode($category) . "\">$category</a></li>";
+                            }
+                            ?>
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="#!">Login</a></li>

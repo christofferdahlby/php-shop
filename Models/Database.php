@@ -5,7 +5,7 @@ class Database
 
     function __construct()
     {
-        // I know!!! Stupid! We will use .env soon!!!
+        // FIXA .ENV
         $host = "localhost";
         $db = "recordstore";
         $user = "root";
@@ -29,7 +29,44 @@ class Database
         $categories = $query->fetchAll(PDO::FETCH_COLUMN, 0);
         return $categories;
     }
+
+    function getProduct($id)
+    {
+        $query = $this->pdo->prepare("SELECT id, artist, genre, description, record_title, price, imageUrl, release_year,stockLevel FROM product WHERE id = :id");
+        $query->execute(["id" => $id]);
+        $query->setFetchMode(PDO::FETCH_CLASS, "Product");
+        return $query->fetch();
+    }
+
+    function updateProductPriceAndStock($id, $price, $stockLevel)
+    {
+        $query = $this->pdo->prepare("UPDATE product SET price = :price, stockLevel = :stockLevel WHERE id = :id");
+        $query->execute([
+            "price" => $price,
+            "stockLevel" => $stockLevel,
+            "id" => $id,
+        ]);
+        return $query->rowCount();
+    }
+
+    function getProductsByGenre($genre)
+    {
+        $query = $this->pdo->prepare("SELECT id, artist, genre, description, record_title, price, imageUrl, release_year, stockLevel FROM product WHERE genre = :genre");
+        $query->execute(["genre" => $genre]);
+        $products = $query->fetchAll(PDO::FETCH_CLASS, "Product");
+        return $products;
+    }
+
+    function searchProducts($searchWord)
+    {
+        $query = $this->pdo->prepare("SELECT id, artist, genre, description, record_title, price, imageUrl, release_year, stockLevel FROM product WHERE record_title like :searchWord OR artist like :searchWord");
+        $searchWordWithProcent = '%' . $searchWord . '%';
+        $query->execute(['searchWord' => $searchWordWithProcent]);
+
+        //$query->execute(['searchWord' => '%' . $searchWord . '%']);
+        $products = $query->fetchAll(PDO::FETCH_CLASS, "Product"); // KLASSNAMNET!!!
+        return $products;
+    }
 }
 ;
-
 ?>
