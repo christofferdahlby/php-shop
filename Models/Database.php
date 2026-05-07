@@ -1,16 +1,19 @@
 <?php
+require_once("vendor/autoload.php");
 class Database
 {
     public $pdo; // php data object - används för att ansluta till databas och göra queries
 
     function __construct()
     {
-        // FIXA .ENV
-        $host = "localhost";
-        $db = "recordstore";
-        $user = "root";
-        $pass = "root";
-        $port = 3306;
+        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+        $dotenv->load();
+
+        $host = $_ENV['DATABASE_HOST'];
+        $db = $_ENV['DATABASE_NAME'];
+        $user = $_ENV['DATABASE_USER'];
+        $pass = $_ENV['DATABASE_PASS'];
+        $port = $_ENV['DATABASE_PORT'];
 
         $dsn = "mysql:host=$host;port=$port;dbname=$db";
         $this->pdo = new PDO($dsn, $user, $pass);

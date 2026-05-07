@@ -1,6 +1,6 @@
 <?php
-require_once(__DIR__ . 'Models/Database.php');
-require_once(__DIR__ . 'utils/router.php');
+require_once(__DIR__ . '/Models/Database.php');
+require_once(__DIR__ . '/utils/router.php');
 
 $database = new Database();
 
