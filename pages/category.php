@@ -1,9 +1,9 @@
 <?php
-require_once("Models/Product.php");
-require_once("Models/Database.php");
-require_once("components/HeaderComponent.php");
-require_once("components/NavbarComponent.php");
-require_once("components/ProductComponent.php");
+require_once(__DIR__ . '/../Models/Product.php');
+require_once(__DIR__ . '/../Models/Database.php');
+require_once(__DIR__ . '/../components/HeaderComponent.php');
+require_once(__DIR__ . '/../components/NavbarComponent.php');
+require_once(__DIR__ . '/../components/ProductComponent.php');
 
 $database = new Database();
 $genre = isset($_GET['genre']) ? $_GET['genre'] : null;
@@ -40,7 +40,8 @@ if ($genre) {
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
             <h2 class="fw-bolder mb-4">
-                <?php echo $genre ? "Genre: " . htmlspecialchars($genre) : "Browse All Genres"; ?></h2>
+                <?php echo $genre ? "Genre: " . htmlspecialchars($genre) : "Browse All Genres"; ?>
+            </h2>
             <?php if ($genre && count($products) > 0): ?>
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                     <?php
@@ -67,7 +68,7 @@ if ($genre) {
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
-    <script src="js/scripts.js"></script>
+    <script src="/js/scripts.js"></script>
 </body>
 
 </html>

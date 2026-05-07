@@ -1,9 +1,9 @@
 <?php
-require_once("Models/Product.php");
-require_once("components/HeaderComponent.php");
-require_once("components/NavbarComponent.php");
-require_once("components/ProductComponent.php");
-require_once("Models/Database.php");
+require_once(__DIR__ . '/../Models/Product.php');
+require_once(__DIR__ . '/../components/HeaderComponent.php');
+require_once(__DIR__ . '/../components/NavbarComponent.php');
+require_once(__DIR__ . '/../components/ProductComponent.php');
+require_once(__DIR__ . '/../Models/Database.php');
 
 $database = new Database();
 
@@ -60,7 +60,7 @@ $filteredProducts = $database->searchProducts($searchWord);
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
-    <script src="js/scripts.js"></script>
+    <script src="/js/scripts.js"></script>
 </body>
 
 </html>

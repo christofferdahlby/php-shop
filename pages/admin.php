@@ -1,8 +1,8 @@
 <?php
-require_once("Models/Product.php");
-require_once("Models/Database.php");
-require_once("components/HeaderComponent.php");
-require_once("components/NavbarComponent.php");
+require_once(__DIR__ . '/../Models/Product.php');
+require_once(__DIR__ . '/../Models/Database.php');
+require_once(__DIR__ . '/../components/HeaderComponent.php');
+require_once(__DIR__ . '/../components/NavbarComponent.php');
 
 $database = new Database();
 $message = null;
