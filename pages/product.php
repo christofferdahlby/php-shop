@@ -63,7 +63,9 @@ $allCategories = $database->getAllCategories();
                             <small class="text-muted">Stock Level: <?php echo $product->stockLevel; ?></small>
                         </div>
                         <div>
-                            <button class="btn btn-primary btn-lg">Add to Cart</button>
+                            <a class="btn btn-primary btn-lg"
+                                href="/addToCart?id=<?php echo $product->id; ?>&fromPage=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>">Add
+                                to Cart</a>
                         </div>
                     </div>
                 </div>

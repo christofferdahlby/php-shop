@@ -1,9 +1,14 @@
 <?php
 require_once(__DIR__ . '/../Models/Database.php');
+require_once(__DIR__ . '/../Models/Cart.php');
+require_once(__DIR__ . '/../Models/CartItem.php');
 function navbarComponent()
 {
     $database = new Database();
-    $allCategories = $database->getAllCategories(); ?>
+    $allCategories = $database->getAllCategories();
+
+    $cart = new Cart($database, session_id());
+    $cartItemCount = $cart->getItemsCount(); ?>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container px-4 px-lg-5">
@@ -42,7 +47,7 @@ function navbarComponent()
                     <button class="btn btn-outline-dark" type="submit">
                         <i class="bi-cart-fill me-1"></i>
                         Cart
-                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                        <span class="badge bg-dark text-white ms-1 rounded-pill"><?php echo $cartItemCount; ?></span>
                     </button>
                 </form>
             </div>
