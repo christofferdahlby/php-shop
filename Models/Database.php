@@ -1,8 +1,10 @@
 <?php
+
 require_once("vendor/autoload.php");
+
 class Database
 {
-    public $pdo; // php data object - används för att ansluta till databas och göra queries
+    public PDO $pdo;
 
     function __construct()
     {
@@ -16,60 +18,148 @@ class Database
         $port = $_ENV['DATABASE_PORT'];
 
         $dsn = "mysql:host=$host;port=$port;dbname=$db";
+
         $this->pdo = new PDO($dsn, $user, $pass);
-        // NU HAR VI EN KOPPLING (CONNECTION) TILL VÅR DATABAS OCH KAN GÖRA QUERIES
     }
 
     function getAllProducts()
     {
-        $query = $this->pdo->query("SELECT id, artist, genre, description, record_title, price, imageUrl, release_year,stockLevel FROM product");
-        $products = $query->fetchAll(PDO::FETCH_CLASS, "Product"); // KLASSNAMNET!!!
+        $query = $this->pdo->query("
+            SELECT
+                product.id,
+                artist,
+                category.category_name AS genre,
+                description,
+                record_title,
+                price,
+                imageUrl,
+                release_year,
+                stockLevel
+            FROM product
+            JOIN category
+            ON product.category_id = category.id
+        ");
+
+        $products = $query->fetchAll(PDO::FETCH_CLASS, "Product");
+
         return $products;
     }
+
     function getAllCategories()
     {
-        $query = $this->pdo->query("SELECT DISTINCT genre FROM product");
+        $query = $this->pdo->query("
+            SELECT category_name
+            FROM category
+        ");
+
         $categories = $query->fetchAll(PDO::FETCH_COLUMN, 0);
+
         return $categories;
     }
 
     function getProduct($id)
     {
-        $query = $this->pdo->prepare("SELECT id, artist, genre, description, record_title, price, imageUrl, release_year,stockLevel FROM product WHERE id = :id");
-        $query->execute(["id" => $id]);
+        $query = $this->pdo->prepare("
+            SELECT
+                product.id,
+                artist,
+                category.category_name AS genre,
+                description,
+                record_title,
+                price,
+                imageUrl,
+                release_year,
+                stockLevel
+            FROM product
+            JOIN category
+            ON product.category_id = category.id
+            WHERE product.id = :id
+        ");
+
+        $query->execute([
+            "id" => $id
+        ]);
+
         $query->setFetchMode(PDO::FETCH_CLASS, "Product");
+
         return $query->fetch();
     }
 
     function updateProductPriceAndStock($id, $price, $stockLevel)
     {
-        $query = $this->pdo->prepare("UPDATE product SET price = :price, stockLevel = :stockLevel WHERE id = :id");
+        $query = $this->pdo->prepare("
+            UPDATE product
+            SET price = :price,
+                stockLevel = :stockLevel
+            WHERE id = :id
+        ");
+
         $query->execute([
             "price" => $price,
             "stockLevel" => $stockLevel,
             "id" => $id,
         ]);
+
         return $query->rowCount();
     }
 
     function getProductsByGenre($genre)
     {
-        $query = $this->pdo->prepare("SELECT id, artist, genre, description, record_title, price, imageUrl, release_year, stockLevel FROM product WHERE genre = :genre");
-        $query->execute(["genre" => $genre]);
+        $query = $this->pdo->prepare("
+            SELECT
+                product.id,
+                artist,
+                category.category_name AS genre,
+                description,
+                record_title,
+                price,
+                imageUrl,
+                release_year,
+                stockLevel
+            FROM product
+            JOIN category
+            ON product.category_id = category.id
+            WHERE category.category_name = :genre
+        ");
+
+        $query->execute([
+            "genre" => $genre
+        ]);
+
         $products = $query->fetchAll(PDO::FETCH_CLASS, "Product");
+
         return $products;
     }
 
     function searchProducts($searchWord)
     {
-        $query = $this->pdo->prepare("SELECT id, artist, genre, description, record_title, price, imageUrl, release_year, stockLevel FROM product WHERE record_title like :searchWord OR artist like :searchWord");
-        $searchWordWithProcent = '%' . $searchWord . '%';
-        $query->execute(['searchWord' => $searchWordWithProcent]);
+        $query = $this->pdo->prepare("
+            SELECT
+                product.id,
+                artist,
+                category.category_name AS genre,
+                description,
+                record_title,
+                price,
+                imageUrl,
+                release_year,
+                stockLevel
+            FROM product
+            JOIN category
+            ON product.category_id = category.id
+            WHERE record_title LIKE :searchWord
+            OR artist LIKE :searchWord
+        ");
 
-        //$query->execute(['searchWord' => '%' . $searchWord . '%']);
-        $products = $query->fetchAll(PDO::FETCH_CLASS, "Product"); // KLASSNAMNET!!!
+        $searchWordWithProcent = '%' . $searchWord . '%';
+
+        $query->execute([
+            'searchWord' => $searchWordWithProcent
+        ]);
+
+        $products = $query->fetchAll(PDO::FETCH_CLASS, "Product");
+
         return $products;
     }
 }
-;
 ?>
