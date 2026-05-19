@@ -8,8 +8,11 @@ require_once(__DIR__ . '/../utils/router.php');
 
 $database = new Database();
 
+$sort = $_GET['sort'] ?? 'record_title';
+$order = $_GET['order'] ?? 'asc';
+
 $popularProducts = $database->getPopularProducts();
-$allProducts = $database->getAllProducts();
+$allProducts = $database->getAllProducts($sort, $order);
 $allCategories = $database->getAllCategories();
 
 ?>

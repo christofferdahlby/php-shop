@@ -7,6 +7,9 @@ require_once(__DIR__ . '/../Models/Database.php');
 
 $database = new Database();
 
+$sort = $_GET['sort'] ?? 'record_title';
+$order = $_GET['order'] ?? 'asc';
+
 // Get product ID from URL parameter
 $productId = isset($_GET['id']) ? $_GET['id'] : null;
 $product = null;
@@ -15,7 +18,7 @@ if ($productId) {
     $product = $database->getProduct($productId);
 }
 
-$allProducts = $database->getAllProducts();
+$allProducts = $database->getAllProducts($sort, $order);
 $allCategories = $database->getAllCategories();
 
 ?>

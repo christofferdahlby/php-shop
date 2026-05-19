@@ -200,25 +200,34 @@ class Database
         return $products;
     }
 
-    function searchProducts($searchWord)
+    function searchProducts($searchWord, $sort, $order)
     {
+        if (!in_array($sort, ['record_title', 'price'])) {
+            $sort = 'record_title';
+        }
+
+        if (!in_array($order, ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
         $query = $this->pdo->prepare("
-            SELECT
-                product.id,
-                artist,
-                category.category_name AS genre,
-                description,
-                record_title,
-                price,
-                imageUrl,
-                release_year,
-                stockLevel
-            FROM product
-            JOIN category
-            ON product.category_id = category.id
-            WHERE record_title LIKE :searchWord
-            OR artist LIKE :searchWord
-        ");
+        SELECT
+            product.id,
+            artist,
+            category.category_name AS genre,
+            description,
+            record_title,
+            price,
+            imageUrl,
+            release_year,
+            stockLevel
+        FROM product
+        JOIN category
+        ON product.category_id = category.id
+        WHERE record_title LIKE :searchWord
+        OR artist LIKE :searchWord
+        ORDER BY $sort $order
+    ");
 
         $searchWordWithProcent = '%' . $searchWord . '%';
 
@@ -226,9 +235,7 @@ class Database
             'searchWord' => $searchWordWithProcent
         ]);
 
-        $products = $query->fetchAll(PDO::FETCH_CLASS, "Product");
-
-        return $products;
+        return $query->fetchAll(PDO::FETCH_CLASS, "Product");
     }
 
     function getCartItems($userId, $sessionId)
