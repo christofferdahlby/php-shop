@@ -169,7 +169,28 @@ class Database
             $query->execute(['sessionId' => $sessionId, 'userId' => $userId]);
         }
 
-        $query = $this->pdo->prepare("SELECT CartItem.Id as id, CartItem.productId, CartItem.quantity, product.record_title as productName, product.price as productPrice, product.price * CartItem.quantity as rowPrice     FROM CartItem JOIN product ON product.id=CartItem.productId  WHERE userId=:userId or sessionId = :sessionId");
+        $query = $this->pdo->prepare("
+            SELECT 
+                CartItem.Id as id,
+                CartItem.productId,
+                CartItem.quantity,
+
+                product.record_title as productName,
+                product.artist,
+                product.imageUrl,
+                product.price as productPrice,
+
+                product.price * CartItem.quantity as rowPrice
+
+            FROM CartItem
+
+            JOIN product 
+            ON product.id = CartItem.productId
+
+            WHERE userId=:userId 
+            OR sessionId = :sessionId
+        ");
+
         $query->execute(['sessionId' => $sessionId, 'userId' => $userId]);
 
 

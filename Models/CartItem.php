@@ -7,6 +7,8 @@ class CartItem
     public $quantity;
 
     public $productName;
+    public $artist;
+    public $imageUrl;
     public $productPrice;
     public $rowPrice;
     public $price;
