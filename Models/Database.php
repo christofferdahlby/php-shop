@@ -1,5 +1,8 @@
 <?php
-
+require_once("Models/Category.php");
+require_once("Models/Product.php");
+require_once("Models/Cart.php");
+require_once("Models/CartItem.php");
 require_once("vendor/autoload.php");
 
 class Database
@@ -22,7 +25,39 @@ class Database
         $this->pdo = new PDO($dsn, $user, $pass);
     }
 
-    function getAllProducts()
+    function getAllProducts($sort, $order)
+    {
+        // sql injection - vid sort/order by
+        if (!in_array($sort, ['record_title', 'price'])) {
+            $sort = 'record_title';
+        }
+        if (!in_array($order, ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $query = $this->pdo->query("
+            SELECT
+                product.id,
+                artist,
+                category.category_name AS genre,
+                description,
+                record_title,
+                price,
+                imageUrl,
+                release_year,
+                stockLevel
+            FROM product
+            JOIN category
+            ON product.category_id = category.id
+            ORDER BY $sort $order
+        ");
+
+        $products = $query->fetchAll(PDO::FETCH_CLASS, "Product");
+
+        return $products;
+    }
+
+    function getPopularProducts()
     {
         $query = $this->pdo->query("
             SELECT
@@ -38,10 +73,10 @@ class Database
             FROM product
             JOIN category
             ON product.category_id = category.id
-        ");
-
-        $products = $query->fetchAll(PDO::FETCH_CLASS, "Product");
-
+            ORDER BY popularityFactor
+            DESC LIMIT 0,4
+            ");
+        $products = $query->fetchAll(PDO::FETCH_CLASS, "Product"); // KLASSNAMNET!!!
         return $products;
     }
 
@@ -84,7 +119,41 @@ class Database
 
         return $query->fetch();
     }
+    function getProductsForCategory($categoryId, $sort, $order)
+    {
+        // sql injection - vid sort/order by
+        if (!in_array($sort, ['record_title', 'price'])) {
+            $sort = 'record_title';
+        }
+        if (!in_array($order, ['asc', 'desc'])) {
+            $order = 'asc';
+        }
 
+        $query = $this->pdo->prepare("
+    SELECT 
+        id,
+        category_id,
+        description,
+        record_title,
+        price,
+        imageUrl,
+        stockLevel
+    FROM product 
+    WHERE category_id = :categoryId 
+    ORDER BY $sort $order 
+");
+        $query->execute(['categoryId' => $categoryId]);
+        return $query->fetchAll(PDO::FETCH_CLASS, "Product");
+    }
+
+    function getGenre($genre)
+    {
+        $query = $this->pdo->prepare("SELECT * FROM category WHERE category_name = :category_name");
+        $query->execute(['category_name' => $genre]);
+        $query->setFetchMode(PDO::FETCH_CLASS, "Category");
+
+        return $query->fetch();
+    }
     function updateProductPriceAndStock($id, $price, $stockLevel)
     {
         $query = $this->pdo->prepare("

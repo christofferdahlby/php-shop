@@ -5,12 +5,24 @@ require_once(__DIR__ . '/../components/HeaderComponent.php');
 require_once(__DIR__ . '/../components/NavbarComponent.php');
 require_once(__DIR__ . '/../components/ProductComponent.php');
 
+
 $database = new Database();
+$sort = $_GET['sort'] ?? "record_title";
+$order = $_GET['order'] ?? "asc";
+$selectedOption = $sort . '-' . $order;
+//$categoryid kommer ju från URL  category.php?id=1
+
+// select * from category where id=$categoryid
+
+
 $genre = isset($_GET['genre']) ? $_GET['genre'] : null;
 $products = [];
 
 if ($genre) {
-    $products = $database->getProductsByGenre($genre);
+    $theCategory = $database->getGenre($genre);
+    $products = $database->getProductsForCategory($theCategory->id, $sort, $order);
+} else {
+    $products = $database->getAllProducts($sort, $order);
 }
 
 ?>
@@ -39,10 +51,22 @@ if ($genre) {
     <!-- Section-->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
+            <!-- Sorting dropdown // GÖR TILL KOMPONENT -->
+            <select id="sortselect">
+                <option value="record_title-asc" <?php echo $selectedOption === 'record_title-asc' ? 'selected' : ''; ?>>
+                    Title A-Z
+                </option>
+                <option value="record_title-desc" <?php echo $selectedOption === 'record_title-desc' ? 'selected' : ''; ?>>Title Z-A
+                </option>
+                <option value="price-asc" <?php echo $selectedOption === 'price-asc' ? 'selected' : ''; ?>>Sort by price:
+                    low to high</option>
+                <option value="price-desc" <?php echo $selectedOption === 'price-desc' ? 'selected' : ''; ?>>Sort by
+                    price: high to low</option>
+            </select>
             <h2 class="fw-bolder mb-4">
                 <?php echo $genre ? "Genre: " . htmlspecialchars($genre) : "Browse All Genres"; ?>
             </h2>
-            <?php if ($genre && count($products) > 0): ?>
+            <?php if (count($products) > 0): ?>
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                     <?php
                     foreach ($products as $product) {
@@ -50,12 +74,11 @@ if ($genre) {
                     }
                     ?>
                 </div>
-            <?php elseif ($genre): ?>
-                <div class="alert alert-info">No products found in the
-                    <?php echo htmlspecialchars($genre); ?> genre.
+
+            <?php elseif ($genre !== null): ?>
+                <div class="alert alert-info">
+                    No products found in the <?php echo htmlspecialchars($genre); ?> genre.
                 </div>
-            <?php else: ?>
-                <div class="alert alert-info">Please select a genre from the Genres dropdown in the navigation menu.</div>
             <?php endif; ?>
         </div>
     </section>

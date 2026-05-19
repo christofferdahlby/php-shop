@@ -8,7 +8,7 @@ require_once(__DIR__ . '/../utils/router.php');
 
 $database = new Database();
 
-
+$popularProducts = $database->getPopularProducts();
 $allProducts = $database->getAllProducts();
 $allCategories = $database->getAllCategories();
 
@@ -36,9 +36,10 @@ $allCategories = $database->getAllCategories();
     <!-- Section-->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="fw-bolder mb-4">Popular Products</h2>
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 <?php
-                foreach ($allProducts as $product) {
+                foreach ($popularProducts as $product) {
 
                     productComponent($product);
 
