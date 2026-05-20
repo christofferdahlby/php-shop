@@ -11,8 +11,20 @@ $database = new Database();
 $sort = $_GET['sort'] ?? 'record_title';
 $order = $_GET['order'] ?? 'asc';
 
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+
+if ($page < 1) {
+    $page = 1;
+}
+
+$productsPerPage = 8;
+$offset = ($page - 1) * $productsPerPage;
+
+$totalProducts = $database->getTotalProductCount();
+$totalPages = ceil($totalProducts / $productsPerPage);
+
 $popularProducts = $database->getPopularProducts();
-$allProducts = $database->getAllProducts($sort, $order);
+$allProducts = $database->getAllProducts($sort, $order, $productsPerPage, $offset);
 $allCategories = $database->getAllCategories();
 
 ?>

@@ -25,36 +25,41 @@ class Database
         $this->pdo = new PDO($dsn, $user, $pass);
     }
 
-    function getAllProducts($sort, $order)
+    function getAllProducts($sort, $order, $limit, $offset)
     {
         // sql injection - vid sort/order by
         if (!in_array($sort, ['record_title', 'price'])) {
             $sort = 'record_title';
         }
+
         if (!in_array($order, ['asc', 'desc'])) {
             $order = 'asc';
         }
 
-        $query = $this->pdo->query("
-            SELECT
-                product.id,
-                artist,
-                category.category_name AS genre,
-                description,
-                record_title,
-                price,
-                imageUrl,
-                release_year,
-                stockLevel
-            FROM product
-            JOIN category
-            ON product.category_id = category.id
-            ORDER BY $sort $order
-        ");
+        $query = $this->pdo->prepare("
+        SELECT
+            product.id,
+            artist,
+            category.category_name AS genre,
+            description,
+            record_title,
+            price,
+            imageUrl,
+            release_year,
+            stockLevel
+        FROM product
+        JOIN category
+        ON product.category_id = category.id
+        ORDER BY $sort $order
+        LIMIT :limit OFFSET :offset
+    ");
 
-        $products = $query->fetchAll(PDO::FETCH_CLASS, "Product");
+        $query->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $query->bindValue(':offset', $offset, PDO::PARAM_INT);
 
-        return $products;
+        $query->execute();
+
+        return $query->fetchAll(PDO::FETCH_CLASS, "Product");
     }
 
     function getPopularProducts()
@@ -119,33 +124,64 @@ class Database
 
         return $query->fetch();
     }
-    function getProductsForCategory($categoryId, $sort, $order)
+    function getProductsForCategory($categoryId, $sort, $order, $limit, $offset)
     {
-        // sql injection - vid sort/order by
         if (!in_array($sort, ['record_title', 'price'])) {
             $sort = 'record_title';
         }
+
         if (!in_array($order, ['asc', 'desc'])) {
             $order = 'asc';
         }
 
         $query = $this->pdo->prepare("
-    SELECT 
-        id,
-        category_id,
-        description,
-        record_title,
-        price,
-        imageUrl,
-        stockLevel
-    FROM product 
-    WHERE category_id = :categoryId 
-    ORDER BY $sort $order 
-");
-        $query->execute(['categoryId' => $categoryId]);
+        SELECT 
+            product.id,
+            product.artist,
+            category.category_name AS genre,
+            product.description,
+            product.record_title,
+            product.price,
+            product.imageUrl,
+            product.release_year,
+            product.stockLevel
+        FROM product
+        JOIN category
+            ON product.category_id = category.id
+        WHERE product.category_id = :categoryId
+        ORDER BY $sort $order
+        LIMIT :limit OFFSET :offset
+    ");
+
+        $query->bindValue(':categoryId', $categoryId, PDO::PARAM_INT);
+        $query->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $query->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        $query->execute();
+
         return $query->fetchAll(PDO::FETCH_CLASS, "Product");
     }
 
+    function getProductCountForCategory($categoryId)
+    {
+        $query = $this->pdo->prepare("
+        SELECT COUNT(*) 
+        FROM product 
+        WHERE category_id = :categoryId
+    ");
+
+        $query->execute(['categoryId' => $categoryId]);
+
+        return $query->fetchColumn();
+    }
+    function getTotalProductCount()
+    {
+        $query = $this->pdo->query("
+        SELECT COUNT(*) FROM product
+    ");
+
+        return $query->fetchColumn();
+    }
     function getGenre($genre)
     {
         $query = $this->pdo->prepare("SELECT * FROM category WHERE category_name = :category_name");
@@ -200,7 +236,7 @@ class Database
         return $products;
     }
 
-    function searchProducts($searchWord, $sort, $order)
+    function searchProducts($searchWord, $sort, $order, $limit, $offset)
     {
         if (!in_array($sort, ['record_title', 'price'])) {
             $sort = 'record_title';
@@ -222,20 +258,36 @@ class Database
             release_year,
             stockLevel
         FROM product
-        JOIN category
-        ON product.category_id = category.id
+        JOIN category ON product.category_id = category.id
         WHERE record_title LIKE :searchWord
         OR artist LIKE :searchWord
         ORDER BY $sort $order
+        LIMIT :limit OFFSET :offset
     ");
 
-        $searchWordWithProcent = '%' . $searchWord . '%';
+        $query->bindValue(':searchWord', '%' . $searchWord . '%');
+        $query->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $query->bindValue(':offset', $offset, PDO::PARAM_INT);
 
-        $query->execute([
-            'searchWord' => $searchWordWithProcent
-        ]);
+        $query->execute();
 
         return $query->fetchAll(PDO::FETCH_CLASS, "Product");
+    }
+
+    function getSearchProductCount($searchWord)
+    {
+        $query = $this->pdo->prepare("
+        SELECT COUNT(*)
+        FROM product
+        WHERE record_title LIKE :searchWord
+        OR artist LIKE :searchWord
+    ");
+
+        $query->execute([
+            'searchWord' => '%' . $searchWord . '%'
+        ]);
+
+        return $query->fetchColumn();
     }
 
     function getCartItems($userId, $sessionId)
