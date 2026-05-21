@@ -20,10 +20,6 @@ $offset = ($page - 1) * $productsPerPage;
 $sort = $_GET['sort'] ?? "record_title";
 $order = $_GET['order'] ?? "asc";
 $selectedOption = $sort . '-' . $order;
-//$categoryid kommer ju från URL  category.php?id=1
-
-// select * from category where id=$categoryid
-
 
 $genre = isset($_GET['genre']) ? $_GET['genre'] : null;
 $products = [];

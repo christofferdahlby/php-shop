@@ -68,7 +68,7 @@ if ($productId) {
                             </span>
                         </div>
 
-                        <!-- <p><?php echo htmlspecialchars($product->description); ?></p> -->
+                        <p><?php echo htmlspecialchars($product->description); ?></p>
 
                         <div class="fs-3 fw-bold mb-3">
                             SEK <?php echo $product->price; ?>
