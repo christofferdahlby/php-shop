@@ -258,7 +258,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     Already have an account?
                                 </p>
 
-                                <a href="/AccountLogin.php" class="text-decoration-none">
+                                <a href="/login" class="text-decoration-none">
                                     Login here
                                 </a>
 

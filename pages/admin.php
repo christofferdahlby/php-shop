@@ -7,6 +7,12 @@ require_once(__DIR__ . '/../components/NavbarComponent.php');
 $database = new Database();
 $message = null;
 
+$sort = 'record_title';
+$order = 'asc';
+
+$limit = 9999;
+$offset = 0;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'])) {
     $productId = $_POST['product_id'];
     $price = $_POST['price'];
@@ -29,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'])) {
     }
 }
 
-$allProducts = $database->getAllProducts();
+$allProducts = $database->getAllProducts($sort, $order, $limit, $offset);
 
 ?>
 
