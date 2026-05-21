@@ -30,6 +30,15 @@ $router->addRoute('/addToCart', function () {
 $router->addRoute('/viewCart', function () {
     require_once(__DIR__ . '/pages/viewCart.php');
 });
+$router->addRoute('/login', function () {
+    require_once(__DIR__ . '/pages/login.php');
+});
+$router->addRoute('/register', function () {
+    require_once(__DIR__ . '/pages/register.php');
+});
+$router->addRoute('/logout', function () {
+    require_once(__DIR__ . '/pages/logout.php');
+});
 $router->dispatch();
 
 ?>

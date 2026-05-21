@@ -33,8 +33,15 @@ function navbarComponent()
                             ?>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="#!">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">Create account</a></li>
+                    <?php $database = new Database();
+                    if (!$database->getUsersDatabase()->getAuth()->isLoggedIn()) { ?>
+                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                    <?php } ?>
+                    <?php $database = new Database();
+                    if ($database->getUsersDatabase()->getAuth()->isLoggedIn()) { ?>
+                        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                    <?php } ?>
+                    <li class="nav-item"><a class="nav-link" href="/register">Create account</a></li>
                 </ul>
                 <form method="get" action="search">
                     <div class="input-group">

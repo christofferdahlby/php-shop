@@ -1,5 +1,6 @@
 {
     "require": {
+        "delight-im/auth": "^9.0",
         "vlucas/phpdotenv": "^5.6"
     }
 }

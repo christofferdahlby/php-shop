@@ -4,11 +4,29 @@ require_once("Models/Product.php");
 require_once("Models/Cart.php");
 require_once("Models/CartItem.php");
 require_once("vendor/autoload.php");
+require_once("Models/UserDatabase.php");
 
 class Database
 {
     public PDO $pdo;
 
+    private $usersDatabase;
+    function getUsersDatabase()
+    {
+        return $this->usersDatabase;
+    }
+
+    function saveUserDetails($userId, $name, $street, $postal_code, $city)
+    {
+        $query = $this->pdo->prepare("INSERT INTO UserDetails (userid, streetaddress, name, postalCode, city) VALUES (:userid, :streetaddress, :name, :postalCode, :city)");
+        $query->execute([
+            "userid" => $userId,
+            "streetaddress" => $street,
+            "name" => $name,
+            "postalCode" => $postal_code,
+            "city" => $city
+        ]);
+    }
     function __construct()
     {
         $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
@@ -23,6 +41,10 @@ class Database
         $dsn = "mysql:host=$host;port=$port;dbname=$db";
 
         $this->pdo = new PDO($dsn, $user, $pass);
+
+        $this->usersDatabase = new UserDatabase($this->pdo);
+        $this->usersDatabase->setupUsers();
+        $this->usersDatabase->seedUsers();
     }
 
     function getAllProducts($sort, $order, $limit, $offset)
