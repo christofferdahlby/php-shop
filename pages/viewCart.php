@@ -98,7 +98,10 @@ $totalPrice = $cart->getTotalPrice();
                                             href="/addToCart?id=<?php echo urlencode($item->productId); ?>&fromPage=/viewCart">
                                             Add one
                                         </a>
-
+                                        <a class="btn btn-danger w-100 mb-2"
+                                            href="/removeFromCart?id=<?php echo urlencode($item->productId); ?>&fromPage=/viewCart">
+                                            Remove one
+                                        </a>
                                         <a class="btn btn-outline-secondary w-100"
                                             href="/product?id=<?php echo urlencode($item->productId); ?>">
                                             View product

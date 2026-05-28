@@ -54,7 +54,8 @@ function navbarComponent()
                     <a href="/viewCart" class="btn btn-outline-dark" type="submit">
                         <i class="bi-cart-fill me-1"></i>
                         Cart
-                        <span class="badge bg-dark text-white ms-1 rounded-pill"><?php echo $cartItemCount; ?></span>
+                        <span class="badge bg-dark text-white ms-1 rounded-pill"
+                            id="cartItemCount"><?php echo $cartItemCount; ?></span>
                     </a>
                 </form>
             </div>

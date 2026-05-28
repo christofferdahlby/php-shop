@@ -78,8 +78,7 @@ if ($productId) {
                             Stock: <?php echo $product->stockLevel; ?>
                         </p>
 
-                        <a class="btn btn-primary btn-lg"
-                            href="/addToCart?id=<?php echo $product->id; ?>&fromPage=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>">
+                        <a class="btn btn-primary btn-lg" onclick="jsaddToCart(<?php echo $product->id; ?>)">
                             Add to Cart
                         </a>
                     </div>
@@ -107,6 +106,7 @@ if ($productId) {
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/scripts.js"></script>
 </body>
 
 </html>

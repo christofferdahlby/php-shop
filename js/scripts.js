@@ -6,6 +6,18 @@
 // This file is intentionally blank
 // Use this file to add JavaScript to your project
 
+function jsaddToCart(productId) {
+    fetch(`/jsaddToCart?id=${productId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update cart count and price
+                document.getElementById("cartItemCount").innerText = data.cartItemCount;
+                // document.getElementById("cartTotalPrice").textContent = data.cartTotalPrice;
+            }
+        });
+}
+
 const sortSelect = document.getElementById("sortselect");
 
 if (sortSelect) {
