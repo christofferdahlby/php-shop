@@ -33,6 +33,12 @@ $router->addRoute('/jsaddToCart', function () {
 $router->addRoute('/removeFromCart', function () {
     require_once(__DIR__ . '/pages/removeFromCart.php');
 });
+$router->addRoute('/jsremoveFromCart', function () {
+    require_once(__DIR__ . '/API/removeFromCart.php');
+});
+$router->addRoute('/javascriptFetchCart', function () {
+    require_once(__DIR__ . '/API/fetchCart.php');
+});
 $router->addRoute('/viewCart', function () {
     require_once(__DIR__ . '/pages/viewCart.php');
 });
@@ -44,6 +50,9 @@ $router->addRoute('/register', function () {
 });
 $router->addRoute('/logout', function () {
     require_once(__DIR__ . '/pages/logout.php');
+});
+$router->addRoute('/prisjakt', function () {
+    require_once(__DIR__ . '/integrations/prisjakt.php');
 });
 $router->dispatch();
 

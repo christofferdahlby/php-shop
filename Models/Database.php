@@ -84,6 +84,26 @@ class Database
         return $query->fetchAll(PDO::FETCH_CLASS, "Product");
     }
 
+    function listAllProducts()
+    {
+        $query = $this->pdo->query("
+            SELECT
+                product.id,
+                artist,
+                category.category_name AS genre,
+                description,
+                record_title,
+                price,
+                imageUrl,
+                release_year,
+                stockLevel
+            FROM product
+            JOIN category
+            ON product.category_id = category.id
+        ");
+        $products = $query->fetchAll(PDO::FETCH_CLASS, "Product"); // KLASSNAMNET!!!
+        return $products;
+    }
     function getPopularProducts()
     {
         $query = $this->pdo->query("

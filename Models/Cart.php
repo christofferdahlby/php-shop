@@ -76,7 +76,7 @@ class Cart
     {
         $total = 0;
         foreach ($this->cartItems as $item) {
-            $total += $item->rowPrice;
+            $total += $item->quantity * $item->productPrice;
         }
         return $total;
     }

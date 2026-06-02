@@ -38,83 +38,9 @@ $totalPrice = $cart->getTotalPrice();
             <?php if (count($cartItems) === 0): ?>
                 <div class="alert alert-info">Your cart is empty. <a href="/">Continue shopping</a>.</div>
             <?php else: ?>
-                <div class="d-flex flex-column gap-4">
+                <div class="d-flex flex-column gap-4" id="cartItemElement">
 
-                    <?php foreach ($cartItems as $item): ?>
 
-                        <div class="card shadow-sm border-0">
-                            <div class="card-body">
-
-                                <div class="row align-items-center">
-
-                                    <!-- Product image -->
-                                    <div class="col-md-2 text-center">
-                                        <img src="<?php echo htmlspecialchars($item->imageUrl); ?>"
-                                            alt="<?php echo htmlspecialchars($item->productName); ?>" class="img-fluid rounded"
-                                            style="max-height: 140px; object-fit: cover;">
-                                    </div>
-
-                                    <!-- Product info -->
-                                    <div class="col-md-7">
-
-                                        <h4 class="mb-1">
-                                            <?php echo htmlspecialchars($item->productName); ?>
-                                        </h4>
-
-                                        <p class="text-muted mb-3">
-                                            <?php echo htmlspecialchars($item->artist); ?>
-                                        </p>
-
-                                        <div class="d-flex gap-4">
-
-                                            <div>
-                                                <small class="text-muted d-block">Quantity</small>
-                                                <strong>
-                                                    <?php echo htmlspecialchars($item->quantity); ?>
-                                                </strong>
-                                            </div>
-
-                                            <div>
-                                                <small class="text-muted d-block">Unit price</small>
-                                                <strong>
-                                                    SEK <?php echo number_format($item->productPrice, 2); ?>
-                                                </strong>
-                                            </div>
-
-                                            <div>
-                                                <small class="text-muted d-block">Total</small>
-                                                <strong>
-                                                    SEK <?php echo number_format($item->rowPrice, 2); ?>
-                                                </strong>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <!-- Actions -->
-                                    <div class="col-md-3 text-md-end mt-4 mt-md-0">
-
-                                        <a class="btn btn-dark w-100 mb-2"
-                                            href="/addToCart?id=<?php echo urlencode($item->productId); ?>&fromPage=/viewCart">
-                                            Add one
-                                        </a>
-                                        <a class="btn btn-danger w-100 mb-2"
-                                            href="/removeFromCart?id=<?php echo urlencode($item->productId); ?>&fromPage=/viewCart">
-                                            Remove one
-                                        </a>
-                                        <a class="btn btn-outline-secondary w-100"
-                                            href="/product?id=<?php echo urlencode($item->productId); ?>">
-                                            View product
-                                        </a>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
-
-                    <?php endforeach; ?>
 
                 </div>
 
@@ -123,7 +49,7 @@ $totalPrice = $cart->getTotalPrice();
                         <a class="btn btn-outline-dark" href="/">Continue shopping</a>
                     </div>
                     <div class="text-end">
-                        <h4>Total: SEK <?php echo number_format($totalPrice, 2); ?></h4>
+                        <h4>Total: SEK <span id="cartTotalPrice"><?php echo number_format($totalPrice, 2); ?></span></h4>
                         <a class="btn btn-primary btn-lg mt-2" href="#">Proceed to checkout</a>
                     </div>
                 </div>
@@ -142,6 +68,13 @@ $totalPrice = $cart->getTotalPrice();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
+    <script>
+        // när sidan laddas så rendera cart items i tabellen
+        document.addEventListener("DOMContentLoaded", async function () {
+            const data = await fetchCartItems();
+            drawCart(data.cartItems, data.cartTotalPrice);
+        });
+    </script>
 </body>
 
 </html>
