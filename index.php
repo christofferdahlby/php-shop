@@ -51,8 +51,17 @@ $router->addRoute('/register', function () {
 $router->addRoute('/logout', function () {
     require_once(__DIR__ . '/pages/logout.php');
 });
+$router->addRoute('/checkout', function () {
+    require_once(__DIR__ . '/pages/checkout.php');
+});
+$router->addRoute('/checkoutsuccess', function () {
+    require_once(__DIR__ . '/pages/checkoutsuccess.php');
+});
 $router->addRoute('/prisjakt', function () {
     require_once(__DIR__ . '/integrations/prisjakt.php');
+});
+$router->addRoute('/chat.php', function () {
+    require_once(__DIR__ . '/pages/chat.php');
 });
 $router->dispatch();
 

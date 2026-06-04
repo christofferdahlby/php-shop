@@ -50,7 +50,7 @@ $totalPrice = $cart->getTotalPrice();
                     </div>
                     <div class="text-end">
                         <h4>Total: SEK <span id="cartTotalPrice"><?php echo number_format($totalPrice, 2); ?></span></h4>
-                        <a class="btn btn-primary btn-lg mt-2" href="#">Proceed to checkout</a>
+                        <a href="/checkout" class="btn btn-primary btn-lg mt-2">Proceed to checkout</a>
                     </div>
                 </div>
             <?php endif; ?>
