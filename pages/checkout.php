@@ -41,6 +41,4 @@ $checkout_session = \Stripe\Checkout\Session::create([
 http_response_code(303);
 header("Location: " . $checkout_session->url);
 
-echo "Checkout page coming soon!";
-
 ?>

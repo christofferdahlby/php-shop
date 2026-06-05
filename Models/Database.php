@@ -391,6 +391,20 @@ class Database
         }
     }
 
+    function clearCart($userId, $sessionId)
+    {
+        $query = $this->pdo->prepare("
+        DELETE FROM CartItem
+        WHERE userId = :userId
+        OR sessionId = :sessionId
+    ");
+
+        $query->execute([
+            'userId' => $userId,
+            'sessionId' => $sessionId
+        ]);
+    }
+
 
 }
 ?>

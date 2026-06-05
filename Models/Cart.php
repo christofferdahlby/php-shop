@@ -89,6 +89,11 @@ class Cart
 
     public function clearCart()
     {
+        $this->dbContext->clearCart(
+            $this->userId,
+            $this->session_id
+        );
+
         $this->cartItems = [];
     }
 }
