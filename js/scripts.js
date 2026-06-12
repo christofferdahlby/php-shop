@@ -6,13 +6,25 @@
 // This file is intentionally blank
 // Use this file to add JavaScript to your project
 
-function drawCart(cartItems, cartTotalPrice) {
+function drawCart(cartItems, cartTotalPrice, cartTotalWeight, freightCost) {
 
 
     const cartTotalPriceElement = document.getElementById('cartTotalPrice');
 
     if (cartTotalPriceElement) {
         cartTotalPriceElement.innerText = cartTotalPrice;
+    }
+
+    const cartTotalWeightElement = document.getElementById('cartTotalWeight');
+
+    if (cartTotalWeightElement) {
+        document.getElementById('cartTotalWeight').innerText = cartTotalWeight;
+    }
+
+    const freightCostElement = document.getElementById('freightCost');
+
+    if (freightCostElement) {
+        document.getElementById('freightCost').innerText = freightCost;
     }
 
     const cartItemElement = document.getElementById('cartItemElement');
@@ -90,30 +102,35 @@ function drawCart(cartItems, cartTotalPrice) {
 
                                 </div>
 
+                                
+
+                                    <div class="d-flex align-items-center gap-1 mt-3">
+
+    <button
+        class="btn btn-outline-dark btn-sm"
+        style="width: 30px;"
+        onclick="jsremoveFromCart(${cartItem.productId})">
+        -
+    </button>
+
+    <button
+        class="btn btn-sm bg-light border-0 disabled"
+        style="width: 50px;">
+        ${cartItem.quantity}
+    </button>
+
+    <button
+        class="btn btn-outline-dark btn-sm"
+        style="width: 30px;"
+        onclick="jsaddToCart(${cartItem.productId})">
+        +
+    </button>
+
+</div>
+
+                                
+
                             </div>
-
-                            <div class="col-md-3 text-md-end mt-4 mt-md-0">
-
-                                <button 
-                                    class="btn btn-dark w-100 mb-2"
-                                    onclick="jsaddToCart(${cartItem.productId})"
-                                >
-                                    Add one
-                                </button>
-
-                                <button 
-                                    class="btn btn-danger w-100 mb-2"
-                                    onclick="jsremoveFromCart(${cartItem.productId})"
-                                >
-                                    Remove one
-                                </button>
-
-                                <a 
-                                    class="btn btn-outline-secondary w-100"
-                                    href="/product?id=${cartItem.productId}"
-                                >
-                                    View product
-                                </a>
 
                             </div>
 
@@ -134,23 +151,31 @@ async function fetchCartItems() {
     return data;
 }
 
+function getSelectedFreightRuleId() {
+    const selectElement = document.getElementById('freightRuleSelect');
+    if (selectElement) {
+        return selectElement.value;
+    }
+    return null;
+}
+
 async function jsaddToCart(productId) {
-    const response = await fetch(`/jsaddToCart?id=${productId}`);
+    const response = await fetch(`/jsaddToCart?id=${productId}&freightRuleId=${getSelectedFreightRuleId()}`);
     const data = await response.json();
     if (data.success) {
         // Update cart count and price
                 document.getElementById('cartItemCount').innerText = data.cartItemCount;
-                drawCart(data.cartItems, data.cartTotalPrice);
+                drawCart(data.cartItems, data.cartTotalPrice, data.cartTotalWeight, data.freightCost);
     }
 }
 
 async function jsremoveFromCart(productId) {
-    const response = await fetch(`/jsremoveFromCart?id=${productId}`);
+    const response = await fetch(`/jsremoveFromCart?id=${productId}&freightRuleId=${getSelectedFreightRuleId()}`);
     const data = await response.json();
     if (data.success) {
         // Update cart count and price
                 document.getElementById('cartItemCount').innerText = data.cartItemCount;
-                drawCart(data.cartItems, data.cartTotalPrice);
+                drawCart(data.cartItems, data.cartTotalPrice, data.cartTotalWeight, data.freightCost);
     }
 }
 

@@ -12,6 +12,7 @@ class Product
     public $description;
     public $release_year;
     public $popularityFactor;
+    public $weight;
 
 }
 ?>

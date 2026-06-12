@@ -60,6 +60,12 @@ $router->addRoute('/checkoutsuccess', function () {
 $router->addRoute('/prisjakt', function () {
     require_once(__DIR__ . '/integrations/prisjakt.php');
 });
+$router->addRoute('/readfreightrules', function () {
+    require_once(__DIR__ . '/integrations/readfreightrules.php');
+});
+$router->addRoute('/calculateCartWithFreight', function () {
+    require_once(__DIR__ . '/API/calculateCartWithFreight.php');
+});
 $router->addRoute('/chat.php', function () {
     require_once(__DIR__ . '/pages/chat.php');
 });

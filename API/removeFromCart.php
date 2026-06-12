@@ -17,6 +17,7 @@ echo json_encode([
     'message' => "Product $productIdToRemove removed from cart",
     'cartItemCount' => $cart->getItemsCount(),
     'cartTotalPrice' => $cart->getTotalPrice(),
+    'cartTotalWeight' => $cart->getTotalWeight(),
     "cartItems" => $cart->getItems(),
 ]);
 

@@ -3,6 +3,7 @@ require_once("Models/Category.php");
 require_once("Models/Product.php");
 require_once("Models/Cart.php");
 require_once("Models/CartItem.php");
+require_once("Models/FreightRule.php");
 require_once("vendor/autoload.php");
 require_once("Models/UserDatabase.php");
 
@@ -68,7 +69,8 @@ class Database
             price,
             imageUrl,
             release_year,
-            stockLevel
+            stockLevel,
+            weight
         FROM product
         JOIN category
         ON product.category_id = category.id
@@ -96,7 +98,8 @@ class Database
                 price,
                 imageUrl,
                 release_year,
-                stockLevel
+                stockLevel,
+                weight
             FROM product
             JOIN category
             ON product.category_id = category.id
@@ -116,7 +119,8 @@ class Database
                 price,
                 imageUrl,
                 release_year,
-                stockLevel
+                stockLevel,
+                weight
             FROM product
             JOIN category
             ON product.category_id = category.id
@@ -139,6 +143,36 @@ class Database
         return $categories;
     }
 
+    function getAllFreightRules()
+    {
+        $query = $this->pdo->query("SELECT id, zone_code as zoneCode, zone_name as zoneName, base_fee as baseFee, weight_modifier as weightMultiplier, free_shipping_threshold as freeShippingThreshold FROM freight_rules");
+        $freightRules = $query->fetchAll(PDO::FETCH_CLASS, "FreightRule"); // KLASSNAMNET!!!
+        return $freightRules;
+    }
+
+    function getFreightRule($id)
+    {
+        $query = $this->pdo->prepare("SELECT id, zone_code as zoneCode, zone_name as zoneName, base_fee as baseFee, weight_modifier as weightMultiplier, free_shipping_threshold as freeShippingThreshold FROM freight_rules WHERE id = :id");
+        $query->execute(['id' => $id]);
+        $query->setFetchMode(PDO::FETCH_CLASS, 'FreightRule');
+        // TA SQL FRÅGA OCH KÖR I MYSQL
+        // OCH OMVANDLA SVARET TILL EN PRODUCT-OBJEKT
+        return $query->fetch();
+    }
+    function updateFreightRule($zoneCode, $zoneName, $baseFee, $weightMultiplier, $freeShippingLimit)
+    {
+        //    
+        $query = $this->pdo->prepare("INSERT INTO freight_rules (zone_code, zone_name, base_fee, weight_modifier," .
+            " free_shipping_threshold) VALUES (:zoneCode, :zoneName, :baseFee, :weight_modifier, :free_shipping_threshold)" .
+            " ON DUPLICATE KEY UPDATE zone_name=:zoneName, base_fee=:baseFee, weight_modifier=:weight_modifier, free_shipping_threshold=:free_shipping_threshold");
+        $query->execute([
+            'zoneCode' => $zoneCode,
+            'zoneName' => $zoneName,
+            'baseFee' => $baseFee,
+            'weight_modifier' => $weightMultiplier,
+            'free_shipping_threshold' => $freeShippingLimit
+        ]);
+    }
     function getProduct($id)
     {
         $query = $this->pdo->prepare("
@@ -151,7 +185,8 @@ class Database
                 price,
                 imageUrl,
                 release_year,
-                stockLevel
+                stockLevel,
+                weight
             FROM product
             JOIN category
             ON product.category_id = category.id
@@ -186,7 +221,8 @@ class Database
             product.price,
             product.imageUrl,
             product.release_year,
-            product.stockLevel
+            product.stockLevel,
+            product.weight
         FROM product
         JOIN category
             ON product.category_id = category.id
@@ -262,7 +298,8 @@ class Database
                 price,
                 imageUrl,
                 release_year,
-                stockLevel
+                stockLevel,
+                weight
             FROM product
             JOIN category
             ON product.category_id = category.id
@@ -298,7 +335,8 @@ class Database
             price,
             imageUrl,
             release_year,
-            stockLevel
+            stockLevel,
+            weight
         FROM product
         JOIN category ON product.category_id = category.id
         WHERE record_title LIKE :searchWord
@@ -349,7 +387,7 @@ class Database
                 product.artist,
                 product.imageUrl,
                 product.price as productPrice,
-
+                product.weight as weight,
                 product.price * CartItem.quantity as rowPrice
 
             FROM CartItem

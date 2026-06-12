@@ -16,6 +16,17 @@ class Cart
 
     }
 
+    public function calculateFreightCost($freightRule)
+    {
+        $totalWeight = $this->getTotalWeight();
+        $totalPrice = $this->getTotalPrice();
+
+        if ($totalPrice >= $freightRule->freeShippingThreshold) {
+            return 0;
+        }
+
+        return $freightRule->baseFee + ($totalWeight * $freightRule->weightMultiplier);
+    }
     public function convertSessionToUser($userId, $newSessionId)
     {
         $this->dbContext->convertSessionToUser($this->session_id, $userId, $newSessionId);
@@ -77,6 +88,15 @@ class Cart
         $total = 0;
         foreach ($this->cartItems as $item) {
             $total += $item->quantity * $item->productPrice;
+        }
+        return $total;
+    }
+
+    public function getTotalWeight()
+    {
+        $total = 0;
+        foreach ($this->cartItems as $item) {
+            $total += $item->weight * $item->quantity;
         }
         return $total;
     }

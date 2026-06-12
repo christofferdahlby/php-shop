@@ -1,0 +1,6 @@
+zon_kod,zon_namn,basavgift_sek,vikt_multiplikator_sek_per_kg,fri_frakt_grans_sek
+SE_ZON_1,"Götaland & Svealand (Södra/Mellersta Sverige)",79.00,4.50,999.00
+SE_ZON_2,"Nedre Norrland (Kust & Inland)",119.00,6.00,1499.00
+SE_ZON_3,"Övre Norrland & Glesbygd",159.00,9.50,2499.00
+NO_DK_NORDIC,"Danmark & Norge (Grannländer)",249.00,15.00,3500.00
+EU_ZON_1,"Europa Standard (Tyskland, Benelux, Frankrike)",299.00,22.50,5000.00
