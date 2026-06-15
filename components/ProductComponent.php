@@ -4,35 +4,31 @@ function productComponent($product)
 {
     ?>
     <div class="col mb-5">
-        <div class="card h-100">
-            <!-- Product image-->
-            <img class="card-img-top"
-                src="<?php echo $product->imageUrl ? $product->imageUrl : "https://dummyimage.com/450x300/dee2e6/6c757d.jpg"; ?>"
-                alt="
-            ..." />
-            <!-- Product details-->
-            <div class="card-body p-4">
-                <div class="text-center">
-                    <!-- Record title-->
-                    <h5 class="fw-bolder"><?php echo $product->record_title; ?></h5>
-                    <!-- Artist name-->
-                    <p class="text-muted"><?php echo $product->artist; ?></p>
-                    <!-- Product price-->
-                    SEK <?php echo $product->price; ?>
-                </div>
-            </div>
-            <!-- Product actions-->
-            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                <div class="d-flex justify-content-center gap-2">
-                    <a class="btn btn-outline-dark btn-sm" href="product?id=<?php echo $product->id; ?>">
-                        View options
-                    </a>
+        <a href="product?id=<?php echo $product->id; ?>" class="text-decoration-none text-reset">
 
-                    <a class="btn btn-primary btn-sm" onclick="jsaddToCart(<?php echo $product->id; ?>)">
-                        Add to Cart
-                    </a>
+            <div class="card product-card h-100 bg-black text-white border-0 rounded-0 shadow-sm">
+
+                <!-- Product image -->
+                <img class="card-img-top rounded-0"
+                    src="<?php echo $product->imageUrl ? $product->imageUrl : "https://dummyimage.com/450x450/000/fff"; ?>"
+                    alt="<?php echo htmlspecialchars($product->record_title); ?>"
+                    style="aspect-ratio: 1 / 1; object-fit: cover;">
+
+                <!-- Product details -->
+                <div class="card-body py-3">
+
+                    <h6 class="mb-1">
+                        <?php echo $product->record_title; ?>
+                    </h6>
+
+                    <p class="text-secondary mb-0">
+                        <?php echo $product->artist; ?>
+                    </p>
+
                 </div>
+
             </div>
-        </div>
+
+        </a>
     </div><?php
 } ?>

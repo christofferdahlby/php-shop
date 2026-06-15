@@ -61,8 +61,8 @@
   --bs-body-font-size: 1rem;
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
-  --bs-body-color: #212529;
-  --bs-body-bg: #fff;
+  --bs-body-color: #fff; /* textfärg */
+  --bs-body-bg: #111; /* bakgrundsfärg */
   --bs-border-width: 1px;
   --bs-border-style: solid;
   --bs-border-color: #dee2e6;
@@ -180,6 +180,57 @@ address {
   margin-bottom: 1rem;
   font-style: normal;
   line-height: inherit;
+}
+
+/* Product Card */
+.product-card {
+    position: relative;
+}
+
+.product-card::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #dc3545;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.product-card:hover::after {
+    opacity: 1;
+}
+
+/* View Record Link */
+.view-record-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.view-record-link:hover {
+    color: white;
+    text-decoration: underline;
+    text-decoration-color: #dc3545;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 6px;
+}
+
+/* Cart Link Remove */
+.cart-link-remove {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.cart-link-remove:hover {
+    color: white;
+    text-decoration: underline;
+    text-decoration-color: #dc3545;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 6px;
 }
 
 ol,

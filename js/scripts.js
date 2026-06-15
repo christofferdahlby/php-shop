@@ -52,95 +52,128 @@ function drawCart(cartItems, cartTotalPrice, cartTotalWeight, freightCost) {
 
             cartItemElement.innerHTML += `
 
-                <div class="card shadow-sm border-0">
+<div
+    class="card border-0"
+    style="background-color:#000; border-radius:0;">
 
-                    <div class="card-body">
+    <div class="row g-0 align-items-stretch" style="min-height:220px;">
 
-                        <div class="row align-items-center">
+        <!-- Cover -->
+        <div class="col-md-4">
 
-                            <div class="col-md-2 text-center">
-                                <img 
-                                    src="${cartItem.imageUrl}"
-                                    alt="${cartItem.productName}"
-                                    class="img-fluid rounded"
-                                    style="max-height: 140px; object-fit: cover;"
-                                >
-                            </div>
+            <img
+                src="${cartItem.imageUrl}"
+                alt="${cartItem.productName}"
+                class="w-100 h-100"
+                style="
+                    object-fit:cover;
+                    min-height:220px;
+                    display:block;
+                "
+            >
 
-                            <div class="col-md-7">
+        </div>
 
-                                <h4 class="mb-1">
-                                    ${cartItem.productName}
-                                </h4>
+        <!-- Product Info -->
+        <div class="col-md-6 text-white p-4 d-flex flex-column justify-content-between">
 
-                                <p class="text-muted mb-3">
-                                    ${cartItem.artist}
-                                </p>
+            <h4 class="fw-normal mb-2">
+                ${cartItem.productName}
+            </h4>
 
-                                <div class="d-flex gap-4">
+            <p class="text-secondary mb-4">
+                ${cartItem.artist}
+            </p>
 
-                                    <div>
-                                        <small class="text-muted d-block">Quantity</small>
-                                        <strong>
-                                            ${cartItem.quantity}
-                                        </strong>
-                                    </div>
+            <div class="d-flex gap-4">
 
-                                    <div>
-                                        <small class="text-muted d-block">Unit price</small>
-                                        <strong>
-                                            SEK ${cartItem.productPrice}
-                                        </strong>
-                                    </div>
+                <div>
+                    <small class="text-secondary d-block">
+                        Quantity
+                    </small>
+                    <strong>
+                        ${cartItem.quantity}
+                    </strong>
+                </div>
 
-                                    <div>
-                                        <small class="text-muted d-block">Total</small>
-                                        <strong>
-                                            SEK ${cartItem.quantity * cartItem.productPrice}
-                                        </strong>
-                                    </div>
+                <div>
+                    <small class="text-secondary d-block">
+                        Unit Price
+                    </small>
+                    <strong>
+                        SEK ${cartItem.productPrice}
+                    </strong>
+                </div>
 
-                                </div>
+                <div>
+                    <small class="text-secondary d-block">
+                        Total
+                    </small>
+                    <strong>
+                        SEK ${cartItem.quantity * cartItem.productPrice}
+                    </strong>
+                </div>
 
-                                
+            </div>
 
-                                    <div class="d-flex align-items-center gap-1 mt-3">
+            <!-- Quantity Controls -->
+            <div class="d-flex align-items-center gap-1 mt-4">
 
-    <button
-        class="btn btn-outline-dark btn-sm"
-        style="width: 30px;"
-        onclick="jsremoveFromCart(${cartItem.productId})">
-        -
-    </button>
+                <button
+                    class="btn btn-dark"
+                    style="width:40px;height:40px;"
+                    onclick="jsremoveFromCart(${cartItem.productId})">
 
-    <button
-        class="btn btn-sm bg-light border-0 disabled"
-        style="width: 50px;">
-        ${cartItem.quantity}
-    </button>
+                    −
 
-    <button
-        class="btn btn-outline-dark btn-sm"
-        style="width: 30px;"
-        onclick="jsaddToCart(${cartItem.productId})">
-        +
-    </button>
+                </button>
+
+                <button
+                    class="btn bg-secondary text-white border-0 disabled"
+                    style="width:60px;height:40px;">
+
+                    ${cartItem.quantity}
+
+                </button>
+
+                <button
+                    class="btn btn-dark"
+                    style="width:40px;height:40px;"
+                    onclick="jsaddToCart(${cartItem.productId})">
+
+                    +
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Actions -->
+        <div class="col-md-2 p-4 d-flex flex-column justify-content-end align-items-end gap-2">
+
+            <a
+                href="/product?id=${cartItem.productId}"
+                class="view-record-link">
+
+                View
+
+            </a>
+
+            <a
+                href="#"
+                class="cart-link-remove"
+                onclick="jsRemoveProduct(${cartItem.productId}, ${cartItem.quantity}); return false;">
+                Remove
+            </a>
+
+        </div>
+
+    </div>
 
 </div>
 
-                                
-
-                            </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            `;
+`;
         });
     }
 
@@ -176,6 +209,28 @@ async function jsremoveFromCart(productId) {
         // Update cart count and price
                 document.getElementById('cartItemCount').innerText = data.cartItemCount;
                 drawCart(data.cartItems, data.cartTotalPrice, data.cartTotalWeight, data.freightCost);
+    }
+}
+
+async function jsRemoveProduct(productId, quantity)
+{
+    const response = await fetch(
+        `/jsremoveFromCart?id=${productId}&quantity=${quantity}&freightRuleId=${getSelectedFreightRuleId()}`
+    );
+
+    const data = await response.json();
+
+    if (data.success)
+    {
+        document.getElementById('cartItemCount').innerText =
+            data.cartItemCount;
+
+        drawCart(
+            data.cartItems,
+            data.cartTotalPrice,
+            data.cartTotalWeight,
+            data.freightCost
+        );
     }
 }
 

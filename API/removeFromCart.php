@@ -8,7 +8,12 @@ $productIdToRemove = $_GET['id'];
 
 $database = new Database();
 $cart = new Cart($database, session_id());
-$cart->removeItem($productIdToRemove, 1);
+
+$quantity = isset($_GET['quantity'])
+    ? (int) $_GET['quantity']
+    : 1;
+
+$cart->removeItem($productIdToRemove, $quantity);
 
 
 

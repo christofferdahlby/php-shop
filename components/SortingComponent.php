@@ -4,31 +4,35 @@ function sortingComponent($title, $selectedOption)
 {
     ?>
 
-    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
 
-        <h2 class="fw-bolder mb-0">
-            <?php echo htmlspecialchars($title); ?>
-        </h2>
+        <div>
+            <h2 class="mb-0 text-white fw-normal">
+                <?php echo htmlspecialchars($title); ?>
+            </h2>
+        </div>
 
-        <select id="sortselect" class="form-select w-auto shadow-sm">
+        <div>
+            <select id="sortselect" class="form-select bg-dark text-white border-secondary" style="min-width: 220px;">
 
-            <option value="record_title-asc" <?php echo $selectedOption === 'record_title-asc' ? 'selected' : ''; ?>>
-                Title A-Z
-            </option>
+                <option value="record_title-asc" <?php echo $selectedOption === 'record_title-asc' ? 'selected' : ''; ?>>
+                    Title A-Z
+                </option>
 
-            <option value="record_title-desc" <?php echo $selectedOption === 'record_title-desc' ? 'selected' : ''; ?>>
-                Title Z-A
-            </option>
+                <option value="record_title-desc" <?php echo $selectedOption === 'record_title-desc' ? 'selected' : ''; ?>>
+                    Title Z-A
+                </option>
 
-            <option value="price-asc" <?php echo $selectedOption === 'price-asc' ? 'selected' : ''; ?>>
-                Price: Low to High
-            </option>
+                <option value="price-asc" <?php echo $selectedOption === 'price-asc' ? 'selected' : ''; ?>>
+                    Price: Low to High
+                </option>
 
-            <option value="price-desc" <?php echo $selectedOption === 'price-desc' ? 'selected' : ''; ?>>
-                Price: High to Low
-            </option>
+                <option value="price-desc" <?php echo $selectedOption === 'price-desc' ? 'selected' : ''; ?>>
+                    Price: High to Low
+                </option>
 
-        </select>
+            </select>
+        </div>
 
     </div>
 

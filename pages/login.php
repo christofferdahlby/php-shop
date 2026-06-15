@@ -3,6 +3,7 @@ ob_start();
 
 require_once(__DIR__ . '/../components/HeaderComponent.php');
 require_once(__DIR__ . '/../components/NavbarComponent.php');
+require_once(__DIR__ . '/../components/FooterComponent.php');
 require_once(__DIR__ . '/../Models/Database.php');
 
 $database = new Database();
@@ -39,21 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php headerComponent("Login"); ?>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
     <?php navbarComponent(); ?>
-
-    <!-- Header -->
-    <header class="bg-dark py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Recordstore</h1>
-                <p class="lead fw-normal text-white-50 mb-0">
-                    Your home for vinyl
-                </p>
-            </div>
-        </div>
-    </header>
 
     <!-- Login Section -->
     <section class="py-5">
@@ -64,63 +53,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="col-lg-5">
 
-                    <div class="card shadow border-0 rounded-4">
+                    <div class="p-4 text-white" style="background-color:#111;">
 
-                        <div class="card-body p-5">
+                        <h2 class="fw-normal mb-3">
+                            Login
+                        </h2>
 
-                            <h2 class="fw-bolder text-center mb-4">
-                                Login
-                            </h2>
+                        <hr class="border-secondary mb-4">
 
-                            <?php if ($message): ?>
+                        <?php if ($message): ?>
 
-                                <div class="alert alert-danger">
-                                    <?php echo $message; ?>
-                                </div>
+                            <div class="alert alert-danger">
+                                <?php echo $message; ?>
+                            </div>
 
-                            <?php endif; ?>
+                        <?php endif; ?>
 
-                            <form method="POST">
+                        <form method="POST">
 
-                                <div class="form-floating mb-3">
+                            <!-- Email -->
+                            <div class="form-floating mb-3">
 
-                                    <input type="email" class="form-control" id="email" name="email"
-                                        placeholder="name@example.com" required>
+                                <input type="email" class="form-control bg-dark text-white border-secondary" id="email"
+                                    name="email" placeholder="name@example.com" required>
 
-                                    <label for="email">
-                                        Email address
-                                    </label>
-
-                                </div>
-
-                                <div class="form-floating mb-4">
-
-                                    <input type="password" class="form-control" id="password" name="password"
-                                        placeholder="Password" required>
-
-                                    <label for="password">
-                                        Password
-                                    </label>
-
-                                </div>
-
-                                <div class="d-grid">
-
-                                    <button class="btn btn-dark btn-lg" type="submit">
-                                        Login
-                                    </button>
-
-                                </div>
-
-                            </form>
-
-                            <div class="text-center mt-4">
-
-                                <a class="text-decoration-none" href="#">
-                                    Lost password?
-                                </a>
+                                <label for="email" class="text-secondary">
+                                    Email address
+                                </label>
 
                             </div>
+
+                            <!-- Password -->
+                            <div class="form-floating mb-4">
+
+                                <input type="password" class="form-control bg-dark text-white border-secondary"
+                                    id="password" name="password" placeholder="Password" required>
+
+                                <label for="password" class="text-secondary">
+                                    Password
+                                </label>
+
+                            </div>
+
+                            <div class="d-grid">
+
+                                <button class="btn btn-light btn-lg" type="submit">
+
+                                    Login
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                        <hr class="border-secondary my-4">
+
+                        <div>
+
+                            <a class="text-white text-decoration-none" href="#">
+
+                                Lost password?
+
+                            </a>
 
                         </div>
 
@@ -135,17 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </section>
 
     <!-- Footer -->
-    <footer class="py-5 bg-dark">
-
-        <div class="container">
-
-            <p class="m-0 text-center text-white">
-                Copyright &copy; Recordstore 2025
-            </p>
-
-        </div>
-
-    </footer>
+    <?php footerComponent(); ?>
 
     <!-- Bootstrap core JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

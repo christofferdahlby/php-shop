@@ -125,7 +125,7 @@ class Database
             JOIN category
             ON product.category_id = category.id
             ORDER BY popularityFactor
-            DESC LIMIT 0,4
+            DESC LIMIT 0,8
             ");
         $products = $query->fetchAll(PDO::FETCH_CLASS, "Product"); // KLASSNAMNET!!!
         return $products;

@@ -3,6 +3,7 @@ require_once(__DIR__ . '/../Models/Product.php');
 require_once(__DIR__ . '/../Models/Database.php');
 require_once(__DIR__ . '/../components/HeaderComponent.php');
 require_once(__DIR__ . '/../components/NavbarComponent.php');
+require_once(__DIR__ . '/../components/FooterComponent.php');
 
 $database = new Database();
 
@@ -22,65 +23,65 @@ if ($productId) {
     <?php headerComponent($product ? $product->record_title : "Product"); ?>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <!-- Navigation -->
     <?php navbarComponent(); ?>
-
-    <!-- Header -->
-    <header class="bg-dark py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Recordstore</h1>
-                <p class="lead fw-normal text-white-50 mb-0">Your home for vinyl</p>
-            </div>
-        </div>
-    </header>
-
     <!-- Section -->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
 
             <?php if ($product): ?>
 
-                <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="row gx-0 justify-content-center bg-black text-white shadow">
 
                     <!-- Image -->
-                    <div class="col-md-6">
-                        <img class="img-fluid rounded"
-                            src="<?php echo $product->imageUrl ?: 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg'; ?>"
+                    <div class="col-md-4">
+                        <img class="img-fluid w-100 h-100 rounded-0" style="object-fit: cover;"
+                            src="<?php echo $product->imageUrl ?: 'https://dummyimage.com/600x600/000/fff'; ?>"
                             alt="<?php echo htmlspecialchars($product->record_title); ?>">
                     </div>
 
                     <!-- Info -->
-                    <div class="col-md-6">
-                        <h1 class="mb-2"><?php echo htmlspecialchars($product->record_title); ?></h1>
+                    <div class="col-md-8 p-5">
 
-                        <p class="text-muted fs-5">
-                            By <?php echo htmlspecialchars($product->artist); ?>
+                        <h1 class="mb-2">
+                            <?php echo htmlspecialchars($product->record_title); ?>
+                        </h1>
+
+                        <p class="text-secondary fs-5 mb-4">
+                            <?php echo htmlspecialchars($product->artist); ?>
                         </p>
 
-                        <div class="mb-3">
-                            <span class="badge bg-dark">
-                                Genre: <?php echo htmlspecialchars($product->genre); ?>
+                        <div class="mb-4">
+
+                            <span class="badge text-bg-secondary me-2">
+                                <?php echo htmlspecialchars($product->genre); ?>
                             </span>
-                            <span class="badge bg-dark">
-                                Released: <?php echo htmlspecialchars($product->release_year); ?>
+
+                            <span class="badge text-bg-secondary">
+                                <?php echo htmlspecialchars($product->release_year); ?>
                             </span>
+
                         </div>
 
-                        <p><?php echo htmlspecialchars($product->description); ?></p>
-
-                        <div class="fs-3 fw-bold mb-3">
-                            SEK <?php echo $product->price; ?>
-                        </div>
-
-                        <p class="text-muted">
-                            Stock: <?php echo $product->stockLevel; ?>
+                        <p class="mb-4">
+                            <?php echo htmlspecialchars($product->description); ?>
                         </p>
 
-                        <a class="btn btn-primary btn-lg" onclick="jsaddToCart(<?php echo $product->id; ?>)">
+                        <div class="fs-3 mb-3">
+                            SEK
+                            <?php echo $product->price; ?>
+                        </div>
+
+                        <p class="text-secondary mb-4">
+                            Stock:
+                            <?php echo $product->stockLevel; ?>
+                        </p>
+
+                        <a class="btn btn-light" onclick="jsaddToCart(<?php echo $product->id; ?>)">
                             Add to Cart
                         </a>
+
                     </div>
 
                 </div>
@@ -97,14 +98,9 @@ if ($productId) {
     </section>
 
     <!-- Footer -->
-    <footer class="py-5 bg-dark">
-        <div class="container">
-            <p class="m-0 text-center text-white">
-                Copyright &copy; Your Shop 2025
-            </p>
-        </div>
-    </footer>
+    <?php footerComponent(); ?>
 
+    <!-- Bootstrap core JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/scripts.js"></script>
 </body>
