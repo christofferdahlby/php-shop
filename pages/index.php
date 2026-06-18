@@ -40,6 +40,7 @@ $allCategories = $database->getAllCategories();
 <body class="d-flex flex-column min-vh-100">
     <!-- Navigation-->
     <?php navbarComponent(); ?>
+    <!-- Hero Section -->
     <section class="position-relative d-flex align-items-center justify-content-center" style="
         height: calc(100vh - 76px);
         background-image: url('/assets/vinyl_hero.jpeg');
@@ -53,11 +54,11 @@ $allCategories = $database->getAllCategories();
         <div class="position-relative text-center text-white">
 
             <h1 class="display-2 fw-light">
-                Crate Digger
+                Recordstore
             </h1>
 
             <p class="lead mb-4">
-                For Those Who Still Dig.
+                Your home for vinyl
             </p>
 
             <a href="#popular-products" class="btn btn-light btn-lg">
@@ -70,9 +71,6 @@ $allCategories = $database->getAllCategories();
     <!-- Section-->
     <section id="popular-products" class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
-            <!-- <div class="bg-black text-white p-3 mb-4">
-                <h2 class="fw-bolder mb-4">Popular Products</h2>
-            </div> -->
             <div class="border-bottom border-secondary text-white px-4 py-3 mb-4 ps-0 pe-0"
                 style="background-color:#111;">
                 <h2 class="mb-0 fw-normal">

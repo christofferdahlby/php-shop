@@ -14,7 +14,7 @@ function navbarComponent()
         <div class="container px-4 px-lg-5">
             <a class="navbar-brand fs-2" href="/">
                 <img src="/assets/skivback.webp" class="rounded-circle border border-dark me-2"
-                    style="width: 60px; height: 60px; object-fit: cover;">crate digger</a>
+                    style="width: 60px; height: 60px; object-fit: cover;">Recordstore</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
                     class="navbar-toggler-icon"></span></button>
